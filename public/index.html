@@ -1,0 +1,20 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="/testing.js"></script>
+</head>
+<body><a id="test" href="#">Click Here</a>
+<div>bookmarklet js:</div>
+<pre>
+javascript: (function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('http:' == document.location.protocol ? 'http://' : 'http://') + 'www.verbalpuke.com:3000/client.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</pre>
+
+</body>
+</html>
