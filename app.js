@@ -11,7 +11,7 @@ app.get('/hello', function(req, res){
 });
 
 app.get('/bookmark', function (req, res) {
-  console.log('/bookmark');
+	console.log('/bookmark');
 
 	var data = req.query;
 	
@@ -27,42 +27,35 @@ app.get('/bookmark', function (req, res) {
 		client.email = clients[data.clientId];
 	}
 
-	if (client.id && client.id !== undefined) {
-		if (data.subject && clientEmail) {
-			var mailBody = data.url + ' ' + data.body;
+	if (client.id && client.id !== undefined && data.subject) {
+		var mailBody = data.url + ' ' + data.body;
 
-			var transport = nodemailer.createTransport("SMTP", {host: 'localhost'});
+		var transport = nodemailer.createTransport("SMTP", {host: 'localhost'});
 
-			var mailOptions = {
-				from: "Bookmarker <mailer@verbalpuke.com>",
-				to: client.email,
-				subject: data.subject,
-				text: data.body
-			};
+		var mailOptions = {
+			from: "Bookmarker <mailer@verbalpuke.com>",
+			to: client.email,
+			subject: data.subject,
+			text: data.body
+		};
 
-			transport.sendMail(mailOptions, function (error, response) {
-				if (error) {
-					console.log(error);
-				} else {
-					console.log('message sent ' + response.message + ' ' + data.subject);
-				}
+		transport.sendMail(mailOptions, function (error, response) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('message sent ' + response.message + ' ' + data.subject);
+			}
 
-				transport.close();
-			});
+			transport.close();
+		});
 
-		} else {
-			console.log('missing parameters. mail not sent');
-		}
-
-		//res.send('TRUE');
 	} else {
-		console.log('client id not set or not found');
-		//res.send('FALSE');
+		console.log('missing parameters. mail not sent');
 	}
 	
-  res.header('Content-Type', 'application/json');
-  res.header('Charset', 'utf-8');
-  res.send(req.query.callback + '({"success": true});');
+	res.header('Content-Type', 'application/json');
+	res.header('Charset', 'utf-8');
+	res.send(req.query.callback + '({"success": true});');
 });
 
 app.listen(3000);
