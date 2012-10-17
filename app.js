@@ -15,26 +15,27 @@ app.get('/bookmark', function (req, res) {
 
 	var data = req.query;
 	
-  // "database"
-  var clients = {
-    '1x2x3x4x5': 'temp2@plenary.org'
-  };
+	// "database"
+	var clients = {
+		'1x2x3x4x5': 'temp2@plenary.org'
+	};
 
 	// make sure client exists
-	var clientFound = false;
-  if (clients.hasOwnProperty(data.clientId)) {
-		clientFound = true;
-  }
+	var client = {};
+	if (clients.hasOwnProperty(data.clientId)) {
+		client.id = data.clientId;
+		client.email = clients[data.clientId];
+	}
 
-	if (clientFound === true) {
-		if (data.subject) {
+	if (client.id && client.id !== undefined) {
+		if (data.subject && clientEmail) {
 			var mailBody = data.url + ' ' + data.body;
 
 			var transport = nodemailer.createTransport("SMTP", {host: 'localhost'});
 
 			var mailOptions = {
 				from: "Bookmarker <mailer@verbalpuke.com>",
-				to: data.toAddress,
+				to: client.email,
 				subject: data.subject,
 				text: data.body
 			};
