@@ -15,7 +15,7 @@ var checkJquery = function () {
   if (typeof jQuery != 'undefined') {
     jqueryIsLoaded();
   } else {
-      window.setTimeout(checkJquery, 100);
+    window.setTimeout(checkJquery, 100);
   }
 };
 
@@ -31,39 +31,40 @@ var loadJqueryAndRun = function (callback) {
 };
 
 var run = function () {
-	console.log('run()');
-	
-	console.log($('title').html());
-	
-	var title = $('title').html() || $('meta[name=title]').attr('content') || 'No Title';
-	
-	var description = $('meta[name=description]').attr('content');
-	if (!description) {
+  console.log('run()');
+  
+  console.log(jQuery('title').html());
+  
+  var title = jQuery('title').html() || jQuery('meta[name=title]').attr('content') || 'No Title';
+  
+  var description = jQuery('meta[name=description]').attr('content');
+  if (!description) {
     description = prompt("No description found. You can enter one.", "");
-	}
-	
+  }
+  
   var body = location.href + "\n\n" + description;
 
-	$.ajax({
-		dataType: 'jsonp',
-		jsonp: 'callback',
-		url: 'http://www.verbalpuke.com:3000/bookmark?callback=?',
-		data: {
-			clientId:'1x2x3x4x5',
-			url: location.href,
-			body: body,
-			subject: title
-		},
-		success: function (data) {
-			console.dir(data);
-		}
-	});
-	
+  jQuery.ajax({
+    dataType: 'jsonp',
+    jsonp: 'callback',
+    url: 'http://www.verbalpuke.com:3000/bookmark?callback=?',
+    data: {
+      clientId:'1x2x3x4x5',
+      url: location.href,
+      body: body,
+      subject: title
+    },
+    success: function (data) {
+      console.dir(data);
+    }
+  });
+  
 };
 
 if (typeof jQuery != 'undefined') {
+  console.log('jQuery is not undefined');
 
-  (function($) {
+  (function(jQuery) {
       /**
        * Used for version test cases.
        *
@@ -78,12 +79,12 @@ if (typeof jQuery != 'undefined') {
        * @return {boolean} Returns the evaluation of the expression, either
        *         true or false.
        */
-      $.isVersion = function(left, oper, right) {
+      jQuery.isVersion = function(left, oper, right) {
           if (left) {
               var pre = /pre/i,
                   replace = /[^\d]+/g,
                   oper = oper || "==",
-                  right = right || $().jquery,
+                  right = right || jQuery.jquery,
                   l = left.replace(replace, ''),
                   r = right.replace(replace, ''),
                   l_len = l.length, r_len = r.length,
@@ -115,10 +116,13 @@ if (typeof jQuery != 'undefined') {
       };
   })(jQuery);
 
-	$(function() {
+  jQuery(document).ready(function(jQuery) {
+    console.log('ready()');
+    
     // new enough
-    if ($.isVersion($.fn.jquery, ">=", '1.5.0')) {
-		run();
+    if (jQuery.isVersion(jQuery.fn.jquery, ">=", '1.5.0')) {
+      console.log('new enough' + jQuery.fn.jquery);
+      run();
     } else {
       // need a newer jquery
       console.log('jquery is present, but version is too old');
@@ -126,6 +130,9 @@ if (typeof jQuery != 'undefined') {
       loadJqueryAndRun();
     }
   });
+  
+  console.log('done');
+  
 } else {
   console.log('jquery not found');
   // load up jquery
